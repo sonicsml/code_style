@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Transform[] _places;
     private Transform _allPlacespoint;
     private int _numberOfPlace;
 
-    private void Start()
+    private void Awake()
     {
         _places = new Transform[_allPlacespoint.childCount];
 
@@ -23,9 +23,9 @@ public class Bullet : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, pointByNumberInArray.position, _speed * Time.deltaTime);
 
-        float distance = 0.01f;
+        float minDistance = 0.01f;
 
-        if ((transform.position - pointByNumberInArray.position).sqrMagnitude < distance)
+        if ((transform.position - pointByNumberInArray.position).sqrMagnitude < minDistance * minDistance)
         {
             transform.position = GetNextPoint();
         }
