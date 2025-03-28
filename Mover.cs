@@ -7,25 +7,27 @@ public class Mover : MonoBehaviour
     private Transform _allPlacespoint;
     private int _numberOfPlace;
 
+#if UNITY_EDITOR
+    [ContextMenu("Refresh Child Array")]
     private void Awake()
     {
         _places = new Transform[_allPlacespoint.childCount];
 
-        for (int i = 0; i < _allPlacespoint.childCount; i++)
+        for (int i = 0; i < _places.Length; i++)
         {
             _places[i] = _allPlacespoint.GetChild(i);
         }
     }
+#endif
 
     private void Update()
     {
-        Transform pointByNumberInArray = _places[_numberOfPlace];
-
-        transform.position = Vector3.MoveTowards(transform.position, pointByNumberInArray.position, _speed * Time.deltaTime);
-
+        Transform currentPoint = _places[_numberOfPlace];
         float minDistance = 0.01f;
 
-        if ((transform.position - pointByNumberInArray.position).sqrMagnitude < minDistance * minDistance)
+        transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, _speed * Time.deltaTime);
+
+        if ((transform.position - currentPoint.position).sqrMagnitude < minDistance * minDistance)
         {
             transform.position = GetNextPoint();
         }
@@ -33,9 +35,7 @@ public class Mover : MonoBehaviour
 
     private Vector3 GetNextPoint()
     {
-        
-        _numberOfPlace = (_numberOfPlace++) % _places.Length;
-
+        _numberOfPlace = ++_numberOfPlace % _places.Length;
 
         Vector3 direction = _places[_numberOfPlace].transform.position;
 
