@@ -27,20 +27,17 @@ public class Mover : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, _speed * Time.deltaTime);
 
-        if ((transform.position - currentPoint.position).sqrMagnitude < minDistance * minDistance)
+        Vector3 direction = currentPoint.position - transform.position;
+
+        if (direction.sqrMagnitude < minDistance * minDistance)
         {
-            transform.position = GetNextPoint();
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _speed * Time.deltaTime);
+            GetNextPoint();
         }
     }
-
-    private Vector3 GetNextPoint()
+    private void GetNextPoint()
     {
         _numberOfPlace = ++_numberOfPlace % _places.Length;
-
-        Vector3 direction = _places[_numberOfPlace].transform.position;
-
-        transform.forward = direction - transform.position;
-
-        return direction;
     }
 }
