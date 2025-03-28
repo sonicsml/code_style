@@ -13,7 +13,7 @@ public class Mover : MonoBehaviour
 
         for (int i = 0; i < _allPlacespoint.childCount; i++)
         {
-            _places[i] = _allPlacespoint.GetChild(i)   ;
+            _places[i] = _allPlacespoint.GetChild(i);
         }
     }
 
@@ -33,12 +33,9 @@ public class Mover : MonoBehaviour
 
     private Vector3 GetNextPoint()
     {
-        _numberOfPlace++;
+        
+        _numberOfPlace = (_numberOfPlace++) % _places.Length;
 
-        if (_numberOfPlace == _places.Length)
-        {
-            _numberOfPlace = 0;
-        }
 
         Vector3 direction = _places[_numberOfPlace].transform.position;
 
